@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam History</title>
+</head>
+<body style="background-color:#f5f0e1;">
+    <h2>My Exam Records</h2>
+    <table border="1" cellpadding="8">
+        <tr>
+            <th>Exam Title</th>
+            <th>Score</th>
+        </tr>
+        {% for rec in records %}
+        <tr>
+            <td>{{ rec[0] }}</td>
+            <td>{{ rec[1] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2">No records found.</td></tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="{{ url_for('export_student_exam', filetype='csv') }}">Export CSV</a> |
+    <a href="{{ url_for('export_student_exam', filetype='pdf') }}">Export PDF</a><br><br>
+    <a href="{{ url_for('student_home') }}">Back to Home</a>
+</body>
+</html>

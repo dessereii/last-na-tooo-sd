@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Result Details</title>
+    <style>
+        body {
+            background-color: #fff5e6;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h2 {
+            color: #5e443b;
+            margin-bottom: 20px;
+        }
+        .result-card {
+            background: white;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .exam-title {
+            font-weight: bold;
+            font-size: 20px;
+            color: #3b2f2f;
+            margin-bottom: 15px;
+        }
+        .score {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        .export-links {
+            margin: 20px 0;
+        }
+        .export-links a {
+            margin-right: 15px;
+            color: #5e443b;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #5e443b;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h2>Exam Result Details</h2>
+    
+    {% for row in records %}
+        <div class="result-card">
+            <div class="exam-title">{{ row[1] }}</div>
+            <div class="score">Score: {{ row[2] }}</div>
+            
+            <!-- Additional details about the exam can be displayed here -->
+        </div>
+    {% else %}
+        <p>No exam results found.</p>
+    {% endfor %}
+    
+    <div class="export-links">
+        <a href="{{ url_for('export_exam_results_csv') }}">Export as CSV</a> |
+        <a href="{{ url_for('export_exam_results_pdf') }}">Export as PDF</a>
+    </div>
+    
+    <a class="back-link" href="{{ url_for('student_exam_results') }}">Back to Results List</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>Quiz Submissions</title></head>
+<body style="background:#fff0e6;">
+<h2>Quiz Submissions</h2>
+<a href="{{ url_for('admin_export_quiz_csv') }}">Export CSV</a> |
+<a href="{{ url_for('admin_export_quiz_pdf') }}">Export PDF</a>
+<br><br>
+{% for row in records %}
+    <div style="background:white; padding:10px; margin-bottom:10px;">
+        <b>Student:</b> {{ row[1] }} <br>
+        <b>Quiz:</b> {{ row[2] }} <br>
+        <b>Answers:</b> {{ row[3] }} <br>
+        <b>Score:</b> {{ row[4] if row[4] is not none else 'Ungraded' }} <br>
+        {% if row[4] is none %}
+            <a href="{{ url_for('grade_quiz', response_id=row[0]) }}">Grade Now</a>
+        {% endif %}
+    </div>
+{% else %}
+    <p>No quiz submissions yet.</p>
+{% endfor %}
+<a href="{{ url_for('admin_home') }}">Back to Home</a>
+</body>
+</html>

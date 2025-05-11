@@ -1,0 +1,147 @@
+<!--admin_manage_exams.html-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Exams</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f2f0;
+            margin: 20px;
+        }
+        h2 {
+            color: #7a5c50;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            margin: auto;
+        }
+        .question-block {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background: #fafafa;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+        }
+        button {
+            background: #a25a4e;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #8a4b41;
+        }
+    </style>
+    <script>
+        let questionCount = 1;
+        const maxQuestions = 100;
+
+        function addQuestion() {
+            if (questionCount >= maxQuestions) {
+                alert("Maximum of 100 questions reached.");
+                return;
+            }
+
+            questionCount++;
+            const container = document.getElementById("question-container");
+
+            const block = document.createElement("div");
+            block.className = "question-block";
+            block.innerHTML = `
+                <h3>Question ${questionCount}</h3>
+                <label for="question${questionCount}">Question Text:</label>
+                <textarea name="question${questionCount}" required></textarea>
+
+                <label for="type${questionCount}">Type:</label>
+                <select name="type${questionCount}" onchange="toggleMCQFields(this, ${questionCount})" required>
+                    <option value="">-- Select Type --</option>
+                    <option value="mcq">Multiple Choice</option>
+                    <option value="short">Short Answer</option>
+                </select>
+
+                <div id="mcq-fields${questionCount}" style="display:none;">
+                    <label>Choice A:</label><input type="text" name="choice${questionCount}a">
+                    <label>Choice B:</label><input type="text" name="choice${questionCount}b">
+                    <label>Choice C:</label><input type="text" name="choice${questionCount}c">
+                    <label>Choice D:</label><input type="text" name="choice${questionCount}d">
+                    <label>Correct Answer (a/b/c/d):</label><input type="text" name="correct${questionCount}" maxlength="1">
+                </div>
+            `;
+            container.appendChild(block);
+        }
+
+        function toggleMCQFields(select, i) {
+            const mcqFields = document.getElementById(`mcq-fields${i}`);
+            mcqFields.style.display = select.value === "mcq" ? "block" : "none";
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>Create New Exam</h2>
+    <form method="POST">
+        <label>Exam Title:</label>
+        <input type="text" name="title" required>
+
+        <label>Duration (minutes):</label>
+        <input type="number" name="duration" required>
+
+        <div id="question-container">
+            <!-- First question block -->
+            <div class="question-block">
+                <h3>Question 1</h3>
+                <label>Question Text:</label>
+                <textarea name="question1" required></textarea>
+
+                <label>Type:</label>
+                <select name="type1" onchange="toggleMCQFields(this, 1)" required>
+                    <option value="">-- Select Type --</option>
+                    <option value="mcq">Multiple Choice</option>
+                    <option value="short">Short Answer</option>
+                </select>
+
+                <div id="mcq-fields1" style="display:none;">
+                    <label>Choice A:</label><input type="text" name="choice1a">
+                    <label>Choice B:</label><input type="text" name="choice1b">
+                    <label>Choice C:</label><input type="text" name="choice1c">
+                    <label>Choice D:</label><input type="text" name="choice1d">
+                    <label>Correct Answer (a/b/c/d):</label><input type="text" name="correct1" maxlength="1">
+                </div>
+            </div>
+        </div>
+
+        <button type="button" onclick="addQuestion()">+ Add Question</button>
+        <button type="submit">Create Exam</button>
+
+        
+    </form>
+
+    <hr>
+    <h2>Existing Exams</h2>
+    <ul>
+        {% for exam in exams %}
+            <li><strong>{{ exam[1] }}</strong> - {{ exam[2] }} minutes</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

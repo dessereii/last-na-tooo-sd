@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Manage Attendance</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .container {
+            background-color: #5e443b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            width: 90%;
+            box-shadow: 0px 0px 10px black;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #6e4c3a;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            color: white;
+        }
+        select, button {
+            padding: 5px;
+            font-size: 14px;
+        }
+        .export-links a {
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #8b5e3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .export-links a:hover {
+            background-color: #a96d47;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>All Student Attendance Records</h2>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="color: lightgreen;">
+              {% for msg in messages %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <div class="export-links">
+            <a href="{{ url_for('export_admin_attendance', filetype='csv') }}">Export CSV</a>
+            <a href="{{ url_for('export_admin_attendance', filetype='pdf') }}">Export PDF</a>
+        </div>
+
+        <table>
+            <tr>
+                <th>Student Number</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+                <th>Actions</th>
+            </tr>
+            {% for id, student_number, status, timestamp in records %}
+            <tr>
+                <td>{{ student_number }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('edit_attendance', record_id=id) }}">
+                        <select name="status">
+                            <option value="Present" {% if status == 'Present' %}selected{% endif %}>Present</option>
+                            <option value="Absent" {% if status == 'Absent' %}selected{% endif %}>Absent</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                <td>{{ timestamp }}</td>
+                <td>
+                    <a href="{{ url_for('delete_attendance', record_id=id) }}" onclick="return confirm('Delete this record?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

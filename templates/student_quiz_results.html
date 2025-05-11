@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+</head>
+<body style="background:#fff8e1;">
+    <h2>Your Quiz Results</h2>
+    <a href="{{ url_for('export_quiz_results_csv') }}">Export as CSV</a> |
+    <a href="{{ url_for('export_quiz_results_pdf') }}">Export as PDF</a>
+    <br><br>
+    {% for row in records %}
+        <div style="background:white; padding:10px; margin-bottom:10px;">
+            <strong>{{ row[1] }}</strong> <br>
+            <em>Score:</em> {{ row[2] }}
+        </div>
+    {% else %}
+        <p>No quiz records yet.</p>
+    {% endfor %}
+    <a href="{{ url_for('student_home') }}">Back to Home</a>
+</body>
+</html>

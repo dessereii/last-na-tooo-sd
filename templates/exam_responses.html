@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exam Submissions</title>
+    <style>
+        body {
+            background: #fff0e6;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #7a5c50;
+        }
+        .submission {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-links {
+            margin-bottom: 20px;
+        }
+        .nav-links a {
+            color: #a25a4e;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .grade-button {
+            display: inline-block;
+            background: #b38867;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            text-decoration: none;
+            margin-top: 5px;
+        }
+        .grade-button:hover {
+            background: #96715b;
+        }
+        .no-submissions {
+            color: #666;
+            font-style: italic;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 20px;
+            background: #7a5c50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            background: #5d4c44;
+        }
+    </style>
+</head>
+<body>
+    <h2>Exam Submissions</h2>
+    
+    <div class="nav-links">
+        <a href="{{ url_for('admin_export_exam_results_csv') }}">Export CSV</a> |
+        <a href="{{ url_for('admin_export_exam_results_pdf') }}">Export PDF</a>
+    </div>
+    
+    {% for row in records %}
+        <div class="submission">
+            <b>Student:</b> {{ row[1] }} <br>
+            <b>Exam:</b> {{ row[2] }} <br>
+            <b>Answers:</b> {{ row[3] }} <br>
+            <b>Score:</b> {{ row[4] if row[4] is not none else 'Ungraded' }} <br>
+            {% if row[4] is none %}
+                <a href="{{ url_for('grade_exam', response_id=row[0]) }}" class="grade-button">Grade Now</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <p class="no-submissions">No exam submissions yet.</p>
+    {% endfor %}
+    
+    <a href="{{ url_for('admin_home') }}" class="back-button">Back to Home</a>
+</body>
+</html>

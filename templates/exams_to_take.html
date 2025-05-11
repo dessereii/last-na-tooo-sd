@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available Exams</title>
+</head>
+<body style="background:#f5e5cc;">
+    <h2>Available Exams</h2>
+    {% if exams %}
+        {% for exam in exams %}
+            <div style="background:white; padding:10px; margin-bottom:10px;">
+                <strong>{{ exam[1] }}</strong><br>
+                <a href="{{ url_for('take_exam', exam_id=exam[0]) }}">Take Exam</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No exams available at this time.</p>
+    {% endif %}
+    <a href="{{ url_for('student_home') }}">Back</a>
+</body>
+</html>

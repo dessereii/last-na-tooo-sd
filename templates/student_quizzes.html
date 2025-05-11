@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Quizzes</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            background-color: #5e443b;
+            padding: 30px;
+            margin: auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px black;
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .quiz-list {
+            margin: 20px 0;
+        }
+        .quiz-item {
+            background-color: #8b5e3c;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .quiz-info {
+            flex-grow: 1;
+        }
+        .take-btn {
+            padding: 8px 16px;
+            background-color: #a44d3a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .take-btn:hover {
+            background-color: #c25e4c;
+        }
+        .no-quizzes {
+            text-align: center;
+            margin: 40px 0;
+            font-style: italic;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: white;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Available Quizzes</h2>
+        
+        <div class="quiz-list">
+            {% if quizzes %}
+                {% for quiz in quizzes %}
+                <div class="quiz-item">
+                    <div class="quiz-info">
+                        <h3>{{ quiz[1] }}</h3>
+                        <p>Duration: {{ quiz[2] }} minutes</p>
+                    </div>
+                    <a href="/student/take_quiz/{{ quiz[0] }}" class="take-btn">Take Quiz</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="no-quizzes">
+                    <p>No quizzes available to take at this time.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <a href="{{ url_for('student_home') }}" class="back-link">Back to Dashboard</a>
+    </div>
+</body>
+</html>

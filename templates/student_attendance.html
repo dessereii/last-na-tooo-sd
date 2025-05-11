@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Attendance</title>
+    <style>
+        body {
+            background-color: #3b2f2f;
+            font-family: Arial, sans-serif;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .container {
+            background-color: #5e443b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+            width: 80%;
+            box-shadow: 0px 0px 10px black;
+        }
+        select, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        .table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        .export-btns a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 15px 10px;
+            background-color: #8b5e3c;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .export-btns a:hover {
+            background-color: #a96d47;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Attendance for {{ student_number }}</h2>
+        <form method="POST">
+            <label for="status">Mark Attendance:</label>
+            <select name="status" id="status" required>
+                <option value="Present">Present</option>
+                <option value="Absent">Absent</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul style="color: lightgreen;">
+              {% for msg in messages %}
+                <li>{{ msg }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <div class="export-btns">
+            <a href="{{ url_for('export_student_attendance', filetype='csv') }}">Download CSV</a>
+            <a href="{{ url_for('export_student_attendance', filetype='pdf') }}">Download PDF</a>
+        </div>
+
+        <table class="table">
+            <tr>
+                <th>Status</th>
+                <th>Timestamp</th>
+            </tr>
+            {% for status, timestamp in records %}
+            <tr>
+                <td>{{ status }}</td>
+                <td>{{ timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
